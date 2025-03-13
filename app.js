@@ -42,9 +42,8 @@ function displayProfile(profile) {
 
 function fetchMembershipData(userId) {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${GOOGLE_APPS_SCRIPT_URL}?userId=${userId}`, true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+    xhr.open('POST', GOOGLE_APPS_SCRIPT_URL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
 
     xhr.onload = function() {
         if (xhr.status === 200) {
@@ -66,7 +65,7 @@ function fetchMembershipData(userId) {
         alert('Network error occurred. Please check your connection and try again.');
     };
 
-    xhr.send();
+    xhr.send(JSON.stringify({ userId: userId }));
 }
 
 function displayMembershipData(data) {
