@@ -3,65 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fetch with No-CORS</title>
+    <title>LINE LIFF Membership System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .profile-info {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .profile-picture {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Fetching Data (No-CORS mode)</h1>
-    <button id="fetchButton">Fetch Data</button>
-    <div id="result">Results will appear here</div>
+    <div class="container">
+        <div id="loading" class="text-center my-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
 
-    <script>
-        document.getElementById('fetchButton').addEventListener('click', fetchData);
+        <div id="content" class="d-none">
+            <div class="profile-info text-center">
+                <img id="profilePicture" src="" alt="Profile Picture" class="profile-picture">
+                <h3 id="displayName" class="mb-3"></h3>
+                <p id="statusMessage" class="text-muted"></p>
+                <p id="membershipStatus" class="badge bg-primary"></p>
+            </div>
 
-        async function fetchData() {
-            const resultElement = document.getElementById('result');
-            resultElement.textContent = 'Loading...';
-            
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbzrfm3f1wtSv0-HjwYHoN8WJz-2xqGLv_GqkSPMD4eBuDngtW-u1xnQdWZ4V2_dvdND7g/exec';
-            
-            try {
-                // Using no-cors mode (note: this will give an opaque response that you cannot read directly)
-                const response = await fetch(scriptUrl, {
-                    method: 'GET',
-                    mode: 'no-cors'
-                });
-                
-                resultElement.textContent = "Request sent! (Note: with no-cors mode, you can't access the response data directly)";
-                
-                // Alternative approach: using a form to submit the request
-                resultElement.innerHTML += "<br><br>Trying alternative method...";
-                sendFormRequest();
-            } catch (error) {
-                resultElement.textContent = `Error: ${error.message}`;
-                console.error('Fetch error:', error);
-            }
-        }
+            <div class="membership-details">
+                <h4 class="mb-3">Membership Details</h4>
+                <div class="card">
+                    <div class="card-body">
+                        <p id="memberSince" class="mb-2"></p>
+                        <p id="points" class="mb-2"></p>
+                        <p id="tier" class="mb-0"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        function sendFormRequest() {
-            // Create a hidden iframe
-            const iframe = document.createElement('iframe');
-            iframe.name = 'hidden_iframe';
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-            
-            // Create a form to submit
-            const form = document.createElement('form');
-            form.method = 'GET';
-            form.action = 'https://script.google.com/macros/s/AKfycbzrfm3f1wtSv0-HjwYHoN8WJz-2xqGLv_GqkSPMD4eBuDngtW-u1xnQdWZ4V2_dvdND7g/exec';
-            form.target = 'hidden_iframe';
-            
-            // Add any parameters you need
-            const param = document.createElement('input');
-            param.type = 'hidden';
-            param.name = 'requestType';
-            param.value = 'getData';
-            form.appendChild(param);
-            
-            document.body.appendChild(form);
-            form.submit();
-            
-            document.getElementById('result').innerHTML += "<br>Form request sent to iframe";
-        }
-    </script>
+    <!-- LIFF SDK -->
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
