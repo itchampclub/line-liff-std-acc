@@ -48,7 +48,8 @@ async function fetchMembershipData(userId) {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
-            }
+            },
+            redirect: 'follow'
         });
 
         if (!response.ok) {
