@@ -44,7 +44,10 @@ async function fetchMembershipData(userId) {
     try {
         const response = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?userId=${userId}`, {
             method: 'GET',
-            mode: 'cors'
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
 
         if (!response.ok) {
