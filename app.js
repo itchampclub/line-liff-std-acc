@@ -1,6 +1,6 @@
 // LIFF app configuration
-const LIFF_ID = 'YOUR_LIFF_ID'; // Replace with your LIFF ID
-const GOOGLE_APPS_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL'; // Replace with your deployed Google Apps Script URL
+const LIFF_ID = '2007060601-PvMk1EVZ'; // Replace with your LIFF ID
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzrfm3f1wtSv0-HjwYHoN8WJz-2xqGLv_GqkSPMD4eBuDngtW-u1xnQdWZ4V2_dvdND7g/exec'; // Replace with your deployed Google Apps Script URL
 
 // Initialize LIFF
 document.addEventListener('DOMContentLoaded', () => {
