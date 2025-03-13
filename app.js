@@ -45,9 +45,9 @@ async function fetchMembershipData(userId) {
         const url = `${GOOGLE_APPS_SCRIPT_URL}?userId=${encodeURIComponent(userId)}`;
         const response = await fetch(url, {
             method: 'GET',
-            mode: 'no-cors',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             }
         });
 
@@ -59,7 +59,10 @@ async function fetchMembershipData(userId) {
         displayMembershipData(data);
     } catch (error) {
         console.error('Error fetching membership data:', error);
-        alert('Failed to fetch membership data. Please try again.');
+        document.getElementById('membershipStatus').textContent = 'Error loading membership';
+        document.getElementById('memberSince').textContent = 'Unable to load member data';
+        document.getElementById('points').textContent = '';
+        document.getElementById('tier').textContent = '';
     }
 }
 
