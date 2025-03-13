@@ -43,7 +43,8 @@ function displayProfile(profile) {
 function fetchMembershipData(userId) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${GOOGLE_APPS_SCRIPT_URL}?userId=${userId}`, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
 
     xhr.onload = function() {
         if (xhr.status === 200) {
