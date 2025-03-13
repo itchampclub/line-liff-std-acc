@@ -52,6 +52,7 @@
                             title="กรุณากรอกตัวเลข 0-999 (ระบบจะเติม 0 ข้างหน้าให้อัตโนมัติ)"
                             oninput="handleNumberInput(this)"
                             class="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-150 ease-in-out peer"
+                            readonly
                         >
                         <div class="hidden peer-invalid:block absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -63,6 +64,20 @@
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                             </svg>
                         </div>
+                    </div>
+                    <div class="mt-2 grid grid-cols-3 gap-2">
+                        <button type="button" onclick="appendNumber('1')" class="p-3 text-center border rounded-md hover:bg-gray-100 active:bg-gray-200 transition-colors">1</button>
+                        <button type="button" onclick="appendNumber('2')" class="p-3 text-center border rounded-md hover:bg-gray-100 active:bg-gray-200 transition-colors">2</button>
+                        <button type="button" onclick="appendNumber('3')" class="p-3 text-center border rounded-md hover:bg-gray-100 active:bg-gray-200 transition-colors">3</button>
+                        <button type="button" onclick="appendNumber('4')" class="p-3 text-center border rounded-md hover:bg-gray-100 active:bg-gray-200 transition-colors">4</button>
+                        <button type="button" onclick="appendNumber('5')" class="p-3 text-center border rounded-md hover:bg-gray-100 active:bg-gray-200 transition-colors">5</button>
+                        <button type="button" onclick="appendNumber('6')" class="p-3 text-center border rounded-md hover:bg-gray-100 active:bg-gray-200 transition-colors">6</button>
+                        <button type="button" onclick="appendNumber('7')" class="p-3 text-center border rounded-md hover:bg-gray-100 active:bg-gray-200 transition-colors">7</button>
+                        <button type="button" onclick="appendNumber('8')" class="p-3 text-center border rounded-md hover:bg-gray-100 active:bg-gray-200 transition-colors">8</button>
+                        <button type="button" onclick="appendNumber('9')" class="p-3 text-center border rounded-md hover:bg-gray-100 active:bg-gray-200 transition-colors">9</button>
+                        <button type="button" onclick="deleteNumber()" class="p-3 text-center border rounded-md hover:bg-gray-100 active:bg-gray-200 transition-colors col-span-1">⌫</button>
+                        <button type="button" onclick="appendNumber('0')" class="p-3 text-center border rounded-md hover:bg-gray-100 active:bg-gray-200 transition-colors">0</button>
+                        <button type="button" onclick="clearNumber()" class="p-3 text-center border rounded-md hover:bg-gray-100 active:bg-gray-200 transition-colors">C</button>
                     </div>
                     <p class="mt-1 text-sm text-gray-500">ระบบจะเติม 0 ข้างหน้าให้อัตโนมัติ</p>
                 </div>
@@ -159,5 +174,30 @@ function handleNumberInput(input) {
         input.classList.remove('border-red-500');
         input.setCustomValidity('');
     }
+}
+
+function appendNumber(num) {
+    const input = document.getElementById('no');
+    const currentValue = input.value.replace(/^0+/, '');
+    if (currentValue.length < 3) {
+        const newValue = currentValue + num;
+        input.value = newValue;
+        handleNumberInput(input);
+    }
+}
+
+function deleteNumber() {
+    const input = document.getElementById('no');
+    const currentValue = input.value.replace(/^0+/, '');
+    if (currentValue.length > 0) {
+        input.value = currentValue.slice(0, -1);
+        handleNumberInput(input);
+    }
+}
+
+function clearNumber() {
+    const input = document.getElementById('no');
+    input.value = '';
+    handleNumberInput(input);
 }
 </script>
