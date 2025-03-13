@@ -43,19 +43,32 @@
 <body>
     <form id="liffForm">
         <div class="form-group">
-            <label for="firstName">First Name</label>
+            <label for="firstName">ชื่อ (ไม่ต้องมีคำนำหน้า)</label>
             <input type="text" id="firstName" name="firstName" required>
         </div>
         <div class="form-group">
-            <label for="lastName">Last Name</label>
+            <label for="lastName">นามสกุล</label>
             <input type="text" id="lastName" name="lastName" required>
         </div>
         <div class="form-group">
-            <label for="class">Class</label>
-            <input type="text" id="class" name="class" required>
+            <label for="class">ระดับชั้น</label>
+            <select id="class" name="class" required>
+                <option value="อ.1">อ.1</option>
+                <option value="อ.2">อ.2</option>
+                <option value="อ.3">อ.3</option>
+                <option value="ป.1">ป.1</option>
+                <option value="ป.2">ป.2</option>
+                <option value="ป.3">ป.3</option>
+                <option value="ป.4">ป.4</option>
+                <option value="ป.5">ป.5</option>
+                <option value="ป.6">ป.6</option>
+                <option value="ม.1">ม.1</option>
+                <option value="ม.2">ม.2</option>
+                <option value="ม.3">ม.3</option>
+            </select>
         </div>
         <div class="form-group">
-            <label for="no">No</label>
+            <label for="no">เลขบัญชี</label>
             <input type="text" id="no" name="no" required>
         </div>
         <button type="submit">Send Message</button>
@@ -66,6 +79,11 @@
         async function initializeLiff() {
             try {
                 await liff.init({ liffId: '2007060601-PvMk1EVZ' });
+                if (!liff.isInClient() && !liff.isInLINE()) {
+                    alert('This application is only available in LINE app or LINE browser.');
+                    window.close();
+                    return;
+                }
                 if (!liff.isLoggedIn()) {
                     liff.login();
                 }
@@ -82,7 +100,7 @@
             const className = document.getElementById('class').value;
             const no = document.getElementById('no').value;
 
-            const message = `Information Submitted:\nFirst Name: ${firstName}\nLast Name: ${lastName}\nClass: ${className}\nNo: ${no}`;
+            const message = `regis|${firstName}-${lastName}-${className}\n-${no}`;
 
             try {
                 if (liff.isInClient()) {
@@ -92,6 +110,7 @@
                     }]);
                     alert('Message sent!');
                     this.reset();
+                    liff.closeWindow();
                 } else {
                     alert('This feature is only available in LINE app');
                 }
