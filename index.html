@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fetch Data from Google Apps Script</title>
+    <title>Fetch with No-CORS</title>
 </head>
 <body>
-    <h1>Data from Google Apps Script</h1>
+    <h1>Fetching Data (No-CORS mode)</h1>
     <button id="fetchButton">Fetch Data</button>
     <div id="result">Results will appear here</div>
 
@@ -17,21 +17,50 @@
             const resultElement = document.getElementById('result');
             resultElement.textContent = 'Loading...';
             
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbzrfm3f1wtSv0-HjwYHoN8WJz-2xqGLv_GqkSPMD4eBuDngtW-u1xnQdWZ4V2_dvdND7g/exec';
+            
             try {
-                const scriptUrl = 'https://script.google.com/macros/s/AKfycbzrfm3f1wtSv0-HjwYHoN8WJz-2xqGLv_GqkSPMD4eBuDngtW-u1xnQdWZ4V2_dvdND7g/exec';
+                // Using no-cors mode (note: this will give an opaque response that you cannot read directly)
+                const response = await fetch(scriptUrl, {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
                 
-                const response = await fetch(scriptUrl);
+                resultElement.textContent = "Request sent! (Note: with no-cors mode, you can't access the response data directly)";
                 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                resultElement.textContent = JSON.stringify(data, null, 2);
+                // Alternative approach: using a form to submit the request
+                resultElement.innerHTML += "<br><br>Trying alternative method...";
+                sendFormRequest();
             } catch (error) {
                 resultElement.textContent = `Error: ${error.message}`;
                 console.error('Fetch error:', error);
             }
+        }
+
+        function sendFormRequest() {
+            // Create a hidden iframe
+            const iframe = document.createElement('iframe');
+            iframe.name = 'hidden_iframe';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+            
+            // Create a form to submit
+            const form = document.createElement('form');
+            form.method = 'GET';
+            form.action = 'https://script.google.com/macros/s/AKfycbzrfm3f1wtSv0-HjwYHoN8WJz-2xqGLv_GqkSPMD4eBuDngtW-u1xnQdWZ4V2_dvdND7g/exec';
+            form.target = 'hidden_iframe';
+            
+            // Add any parameters you need
+            const param = document.createElement('input');
+            param.type = 'hidden';
+            param.name = 'requestType';
+            param.value = 'getData';
+            form.appendChild(param);
+            
+            document.body.appendChild(form);
+            form.submit();
+            
+            document.getElementById('result').innerHTML += "<br>Form request sent to iframe";
         }
     </script>
 </body>
