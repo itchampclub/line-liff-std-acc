@@ -40,27 +40,32 @@ function displayProfile(profile) {
     document.getElementById('content').classList.remove('d-none');
 }
 
-async function fetchMembershipData(userId) {
-    try {
-        const response = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?userId=${userId}`, {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json'
+function fetchMembershipData(userId) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `${GOOGLE_APPS_SCRIPT_URL}?userId=${userId}`, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            try {
+                const data = JSON.parse(xhr.responseText);
+                displayMembershipData(data);
+            } catch (error) {
+                console.error('Error parsing membership data:', error);
+                alert('Failed to parse membership data. Please try again.');
             }
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch membership data');
+        } else {
+            console.error('Error fetching membership data:', xhr.statusText);
+            alert('Failed to fetch membership data. Please try again.');
         }
+    };
 
-        const data = await response.json();
-        displayMembershipData(data);
+    xhr.onerror = function() {
+        console.error('Network error occurred');
+        alert('Network error occurred. Please check your connection and try again.');
+    };
 
-    } catch (error) {
-        console.error('Error fetching membership data:', error);
-        alert('Failed to fetch membership data. Please try again.');
-    }
+    xhr.send();
 }
 
 function displayMembershipData(data) {
